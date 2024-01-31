@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  oracle-db:
+    image: container-registry.oracle.com/database/express:21.3.0-xe
+    container_name: oracle-db  # Nombre del contenedor
+    ports:
+      - "1521:1521"  # Mapea el puerto 1521 del host al puerto 1521 del contenedor
+      - "5500:5500"  # Mapea el puerto 5500 del host al puerto 5500 del contenedor
+    environment:
+      - ORACLE_PWD=<Contrasena>                 # Contraseña de la base de datos
+      - ORACLE_CHARACTERSET=AL32UTF8            # Conjunto de caracteres de la base de datos
+    volumes:
+        # Mapea un volumen para persistir los datos de la base de datos
+        # - ./data:/opt/oracle/oradata 
+      - ./data:/opt/oracle/oradata:Z
+
+        # Mapea un volumen para scripts personalizados de inicio
+      - .:/opt/oracle/scripts/startup 
+
+        # Mapea un volumen para scripts personalizados de configuración
+      - .:/opt/oracle/scripts/setup 
+
+    networks:
+      - oracle-network  # Nombre de la red 
+
+networks:
+  oracle-network:  # Definición de la red
+
+
